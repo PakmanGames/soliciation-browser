@@ -33,6 +33,7 @@ export function QuantityFilter({
     <div className="flex items-center gap-2">
       <QuantityInput
         label="Minimum quantity"
+        name="qtyMin"
         placeholder="Min"
         value={min.text}
         onChange={min.setText}
@@ -43,6 +44,7 @@ export function QuantityFilter({
       </span>
       <QuantityInput
         label="Maximum quantity"
+        name="qtyMax"
         placeholder="Max"
         value={max.text}
         onChange={max.setText}
@@ -54,12 +56,14 @@ export function QuantityFilter({
 
 function QuantityInput({
   label,
+  name,
   placeholder,
   value,
   onChange,
   onEnter,
 }: {
   label: string;
+  name: string;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
@@ -72,6 +76,7 @@ function QuantityInput({
       min={0}
       step={1}
       aria-label={label}
+      name={name}
       placeholder={placeholder}
       value={value}
       onChange={(event) => onChange(event.target.value)}

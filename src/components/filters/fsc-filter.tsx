@@ -61,6 +61,7 @@ export function FscFilter({
       <CommandInput
         value={search}
         onValueChange={setSearch}
+        name="fscSearch"
         placeholder="Search FSC code or name"
         aria-label="Search product categories"
       />
