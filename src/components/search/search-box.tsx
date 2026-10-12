@@ -61,7 +61,7 @@ export function SearchBox() {
           placeholder="Search solicitation #, NSN, part number, or item name"
           aria-label="Search solicitations"
           // The native clear button would duplicate ours.
-          className="[&::-webkit-search-cancel-button]:appearance-none"
+          className="text-ellipsis [&::-webkit-search-cancel-button]:appearance-none"
         />
         <InputGroupAddon align="inline-end">
           {text ? (
