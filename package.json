@@ -10,11 +10,13 @@
     "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "db:migrate": "tsx --env-file-if-exists=.env scripts/db-migrate.ts",
-    "db:load": "tsx --env-file-if-exists=.env scripts/db-load.ts"
+    "db:load": "tsx --env-file-if-exists=.env scripts/db-load.ts",
+    "ingest": "tsx --env-file-if-exists=.env scripts/ingest.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.104.1",
     "@tanstack/react-table": "^9.2.8",
+    "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
     "cn": "^0.4.0",
