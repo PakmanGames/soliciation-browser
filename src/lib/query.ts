@@ -21,7 +21,10 @@ export interface SolicitationQuery {
   issuedTo?: string;
   /** Only rows with `returnByDate` between today and today + N days, inclusive. Excludes null due dates. */
   dueWithinDays?: number;
-  /** When false (default), hides rows whose `returnByDate` is before today. Null due dates are never hidden. */
+  /**
+   * When false (default), hides RFQs that can no longer be quoted: `returnByDate` before today, or a DIBBS
+   * status (`extra.status`) other than Open, such as Awarded, Cancelled, or Removed. Null due dates are never hidden.
+   */
   includeExpired?: boolean; // default false
   /** Federal Supply Class codes, OR-ed together, e.g. ["5305", "5310"]. */
   fsc?: string[];
