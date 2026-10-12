@@ -17,7 +17,8 @@ The scaffold (WS0) is being built right now and will be pushed as branch `ws0-sc
 1. Start immediately: read the PRD and plan your columns, states, and component split.
 2. Run `git fetch origin` every 2 minutes.
    As soon as `origin/main` has a `package.json`, create branch `ws3-results-table` from it; if only `origin/ws0-scaffold` exists, branch from that and rebase onto main once it merges.
-3. Read the scaffold's `src/lib/api.ts`, `src/lib/query.ts`, `src/lib/solicitation.ts`, and your stub components before writing code.
+3. Never create your own `package.json` or Next.js app while you wait; the scaffold is the only base.
+4. Read the scaffold's `src/lib/api.ts`, `src/lib/query.ts`, `src/lib/solicitation.ts`, and your stub components before writing code.
 
 ## What you build
 
