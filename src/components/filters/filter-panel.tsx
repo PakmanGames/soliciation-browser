@@ -100,7 +100,7 @@ export function FilterPanel() {
 
   return (
     <div className="flex flex-col">
-      <div className="sticky top-0 z-10 flex h-12 shrink-0 items-center justify-between gap-2 border-b bg-background px-4">
+      <div className="sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between gap-2 border-b bg-background px-4">
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-semibold">Filters</h2>
           {activeCount > 0 && (
