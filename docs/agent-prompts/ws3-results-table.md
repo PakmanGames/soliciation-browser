@@ -1,7 +1,7 @@
 # Task: WS3 results table
 
 You are one of several agents building a take-home project in parallel, and the entire project has 1 hour.
-Read `README.md` (the brief) and `docs/PRD.md` in the repo first, especially sections 0, 2, 5.1, and 6.
+Read `docs/ASSIGNMENT.md` (the brief) and `docs/PRD.md` in the repo first, especially sections 0, 2, 5.1, and 6.
 You are WS3.
 
 Your job: the results table a vendor scans every morning.

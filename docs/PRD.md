@@ -2,7 +2,7 @@
 
 Status: draft v2, for iteration.
 Owner: lead (this session).
-Brief: `README.md`.
+Brief: `docs/ASSIGNMENT.md`.
 
 ## 0. Constraints (read first)
 

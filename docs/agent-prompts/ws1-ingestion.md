@@ -1,7 +1,7 @@
 # Task: DIBBS RFQ ingestion module
 
 You are one of several agents building a take-home project in parallel.
-Read `README.md` for the assignment brief.
+Read `docs/ASSIGNMENT.md` for the assignment brief.
 We are building a full-stack web app that pulls daily RFQs (Requests for Quotation) from DIBBS (https://www.dibbs.bsm.dla.mil/RFQ/) and lets a vendor browse, search, and filter them.
 Your job is the layer that talks to DIBBS: find the best way to get the data, then build a reliable, tested TypeScript module and CLI that returns normalized records.
 Other agents are building storage, API, and UI at the same time against the contract below, so stay inside your lane and hit the milestones early.

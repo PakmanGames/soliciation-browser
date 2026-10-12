@@ -1,7 +1,7 @@
 # Task: WS5 reference data
 
 You are one of several agents building a take-home project in parallel, and the entire project has 1 hour.
-Read `README.md` (the brief) and `docs/PRD.md` (sections 0, 5.3, 6.1, 7) in the repo first.
+Read `docs/ASSIGNMENT.md` (the brief) and `docs/PRD.md` (sections 0, 5.3, 6.1, 7) in the repo first.
 You are WS5.
 
 Your job: turn the cryptic codes in DIBBS data into human labels for the filters and table.

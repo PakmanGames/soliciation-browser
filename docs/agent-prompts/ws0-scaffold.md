@@ -3,7 +3,7 @@
 You are one of several agents building a take-home project in parallel.
 Read these first, in the repo:
 
-1. `README.md`: the assignment brief.
+1. `docs/ASSIGNMENT.md`: the assignment brief.
 2. `docs/PRD.md`: product, architecture, contracts, workstreams, and file ownership.
    You are WS0.
 3. `docs/agent-prompts/ws1-ingestion.md`: only for the `Solicitation` contract block, which you copy verbatim.
@@ -35,7 +35,7 @@ Work in your own git worktree on a branch named `ws0-scaffold`, created from `or
 
 - `create-next-app` refuses non-empty directories and writes its own README.
   Scaffold into a temp directory and move the files into the repo root.
-  The existing `README.md` (the brief) and `docs/` must stay untouched.
+  The existing `README.md` (the project write-up) and `docs/` must stay untouched.
 - Scripts in `package.json`: `dev`, `build`, `start`, `lint`, `typecheck` (`tsc --noEmit`), `format`.
   Do not add `db:*` or `ingest` scripts; WS2 and WS1 own those.
 - `.gitignore` additions: `.env`, `data/raw/`.

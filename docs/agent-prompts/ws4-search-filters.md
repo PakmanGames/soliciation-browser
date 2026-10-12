@@ -1,7 +1,7 @@
 # Task: WS4 search and filters
 
 You are one of several agents building a take-home project in parallel, and the entire project has 1 hour.
-Read `README.md` (the brief) and `docs/PRD.md` in the repo first, especially sections 0, 2, 5.2, 5.3, and 6.
+Read `docs/ASSIGNMENT.md` (the brief) and `docs/PRD.md` in the repo first, especially sections 0, 2, 5.2, 5.3, and 6.
 You are WS4.
 
 Your job: the search box and filter panel that let a vendor narrow hundreds of RFQs to the few worth quoting.

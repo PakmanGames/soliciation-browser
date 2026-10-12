@@ -1,7 +1,7 @@
 # Task: WS2 Postgres storage and API
 
 You are one of several agents building a take-home project in parallel, and the entire project has 1 hour.
-Read `README.md` (the brief) and `docs/PRD.md` in the repo first, especially sections 0, 5, 6, and 7.
+Read `docs/ASSIGNMENT.md` (the brief) and `docs/PRD.md` in the repo first, especially sections 0, 5, 6, and 7.
 You are WS2.
 
 Your job: store DIBBS solicitations in Postgres and serve the search, filter, and facet API the UI is built on.
