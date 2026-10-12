@@ -195,9 +195,13 @@ function conditions(
 
   for (const field of Object.keys(FACET_COLUMNS) as FacetField[]) {
     const values = query[field];
-    if (field !== skip && values?.length) {
-      result.push(sql`${sql(FACET_COLUMNS[field])} in ${sql(values)}`);
-    }
+    if (field === skip || !values?.length) continue;
+    // Office values are prefixes, so one value can select a whole center ("SPE7M").
+    result.push(
+      field === "office"
+        ? sql`office ^@ any(${values}::text[])`
+        : sql`${sql(FACET_COLUMNS[field])} in ${sql(values)}`,
+    );
   }
 
   return result;
