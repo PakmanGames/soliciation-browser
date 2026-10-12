@@ -10,7 +10,7 @@ Read these first, in the repo:
 
 Your job is the foundation every other agent builds on: a Next.js app with a working end-to-end data flow (fixture -> stub API -> URL state -> page) and the shared contracts.
 The storage (WS2), results table (WS3), and search and filters (WS4) agents are waiting on you, so speed beats polish.
-Target: 30 to 45 minutes.
+Target: 15 minutes. The entire project has 1 hour (PRD section 0).
 Build the frame and the seams, not the features.
 
 ## Stack (fixed)
@@ -18,7 +18,8 @@ Build the frame and the seams, not the features.
 - Next.js latest (App Router, `src/` dir, `@/*` import alias), TypeScript strict, pnpm, Node 24.
 - Tailwind CSS and shadcn/ui.
 - TanStack Query for data fetching. Also install `@tanstack/react-table` now so WS3 does not touch `package.json`.
-- Vitest for unit tests, Prettier with `prettier-plugin-tailwindcss`.
+- Prettier with `prettier-plugin-tailwindcss`.
+- No tests and no test runner (PRD section 0). Verify by running the app in a browser.
 - PostgreSQL 17 via Docker Compose. You only provide the container; WS2 owns everything database related, including the driver and ORM.
 
 Use the context7 MCP tools for current Next.js, shadcn, and TanStack Query docs instead of relying on memory.
@@ -35,9 +36,8 @@ Work in your own git worktree on a branch named `ws0-scaffold`, created from `or
 - `create-next-app` refuses non-empty directories and writes its own README.
   Scaffold into a temp directory and move the files into the repo root.
   The existing `README.md` (the brief) and `docs/` must stay untouched.
-- Scripts in `package.json`: `dev`, `build`, `start`, `lint`, `typecheck` (`tsc --noEmit`), `test` (`vitest run`), `format`.
+- Scripts in `package.json`: `dev`, `build`, `start`, `lint`, `typecheck` (`tsc --noEmit`), `format`.
   Do not add `db:*` or `ingest` scripts; WS2 and WS1 own those.
-- Vitest config that resolves the `@/*` alias.
 - `.gitignore` additions: `.env`, `data/raw/`.
 
 ### 2. shadcn/ui components up front
@@ -62,7 +62,6 @@ Initialize shadcn/ui with the neutral base color and add the components WS3 and 
   - `serializeQuery(query: SolicitationQuery): URLSearchParams`: omits params equal to their default, so URLs stay short and stable.
   - Conventions from the PRD: arrays as repeated params (`fsc=5305&fsc=5310`), booleans as `true`/`false`.
   - Defaults: `sort=dueDate`, `dir=asc`, `includeExpired=false`, `page=1`, `pageSize=50` (max 200).
-  - Unit tests: round trip, defaults omitted, garbage dropped, repeated params.
 - These are the files every agent codes against, so add short doc comments on each field explaining its meaning.
 
 ### 5. Stub API over the fixture
@@ -76,7 +75,6 @@ Initialize shadcn/ui with the neutral base color and add the components WS3 and 
   - `lastSyncedAt`: the newest `fetchedAt` in the data.
 - `src/app/api/solicitations/route.ts`: `GET` that parses the URL with `parseQuery` and returns a `SolicitationPage` from the stub.
   WS2 will swap the stub for Postgres behind this same route, so keep the route itself to a few lines.
-- Unit tests for the stub's facet logic and the `q` matching.
 
 ### 6. Client data flow
 
@@ -121,7 +119,7 @@ Polish belongs to WS3 and WS4.
 
 ### 9. `CLAUDE.md` for all agents
 
-Short, no more than 40 lines: one-line project summary, commands (dev, test, lint, typecheck, format, docker), repo layout, a pointer to `docs/PRD.md` section 6.1 for file ownership, and the rule that agents only edit paths they own and change contracts only through the lead.
+Short, no more than 40 lines: one-line project summary, commands (dev, lint, typecheck, format, docker), repo layout, a pointer to `docs/PRD.md` section 6.1 for file ownership, and the rule that agents only edit paths they own and change contracts only through the lead.
 
 ## Boundaries
 
@@ -132,7 +130,7 @@ Do not edit `README.md` or anything in `docs/`.
 
 - `docker compose up -d && pnpm install && pnpm dev` shows the page with fixture rows coming through the stub API.
 - Editing the URL by hand (for example `?q=screw&fsc=5305&includeExpired=true`) changes the results, the facet counts, and the input states.
-- `pnpm lint && pnpm typecheck && pnpm test && pnpm build` all pass.
+- `pnpm lint && pnpm typecheck && pnpm build` all pass.
 - You checked the page in a real browser at desktop and mobile widths: no console errors, no hydration warnings, no layout shift.
 - Small conventional commits on `ws0-scaffold`, rebased onto `origin/main`, and the branch pushed.
 

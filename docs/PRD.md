@@ -1,8 +1,19 @@
 # PRD: Solicitation Browser
 
-Status: draft v1, for iteration.
+Status: draft v2, for iteration.
 Owner: lead (this session).
 Brief: `README.md`.
+
+## 0. Constraints (read first)
+
+- **Time: the entire project has 1 hour, start to finish.**
+  Every workstream should aim to land its first mergeable version within 20 to 30 minutes.
+  Cut scope before cutting stability; stretch items (5.5) are out unless everything else is done.
+- **No tests unless something is actually broken.**
+  Do not write unit or integration tests, and do not set up a test runner.
+  Verify by running the app and checking it in a browser.
+  Write a test only to pin down a real bug you are fixing.
+  Typecheck and lint still have to pass.
 
 ## 1. Problem
 
@@ -176,22 +187,21 @@ WS0 walking skeleton, so WS2 to WS4 never wait on each other:
 - `src/app/page.tsx` composing `<SearchBox/>`, `<FilterPanel/>`, and `<ResultsTable/>` stubs, plus URL-state and data hooks in `src/lib/api.ts`.
 - A placeholder fixture of about 20 hand-made rows until WS1 Milestone 1 lands.
 
-## 8. Timeline (assumes about 4 hours, T0 = now)
+## 8. Timeline (1 hour total, T0 = now)
 
 | Window | Lead | Agents |
 | --- | --- | --- |
-| T0 to T+30m | Finalize PRD, review WS0, write WS2 to WS5 prompts | WS1 recon + fixture, WS5 |
-| T+30m to T+2h | Merge milestones, unblock, review | WS1 module, WS2, WS3, WS4 |
-| T+2h to T+3h | Integrate, real ingest of 7 to 10 days, E2E pass in a browser, fix | Fix-up tasks from lead |
-| T+3h to T+3.5h | Polish, README (approach, filters, tradeoffs), demo script | Optional stretch items |
-| T+3.5h to T+4h | Buffer | |
+| T0 to T+15m | Finalize PRD, write WS2 to WS5 prompts, merge WS0 | WS0 scaffold, WS1 recon + fixture, WS5 |
+| T+15m to T+40m | Merge milestones as they land, unblock | WS1 module, WS2, WS3, WS4 |
+| T+40m to T+50m | Integrate, real ingest, browser pass, fix | Fix-up tasks from lead |
+| T+50m to T+60m | README (approach, filters, tradeoffs), demo prep | |
 
 ## 9. Merge protocol
 
 - Each agent works in its own worktree and branch, with small conventional commits.
 - The lead merges to main; agents rebase onto main after each merge.
 - Milestone commits (contract, fixture, skeleton) merge immediately to unblock others.
-- Before merge: typecheck, lint, and tests pass on the branch.
+- Before merge: typecheck and lint pass, and the app runs.
 
 ## 10. Risks
 
