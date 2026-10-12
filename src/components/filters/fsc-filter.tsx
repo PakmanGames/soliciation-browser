@@ -83,7 +83,7 @@ export function FscFilter({
                   aria-checked={checked}
                   className={cn(
                     facetRowClassName(option.count),
-                    "mx-0 cursor-pointer py-0 hover:bg-muted data-selected:bg-transparent group-focus-within/fsc:data-selected:bg-muted [&>svg:last-child]:hidden",
+                    "cursor-pointer py-0 hover:bg-muted data-selected:bg-transparent group-focus-within/fsc:data-selected:bg-muted [&>svg:last-child]:hidden",
                   )}
                 >
                   <span
