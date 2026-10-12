@@ -184,6 +184,8 @@ function conditions(
     result.push(
       sql`(return_by_date is null or return_by_date >= current_date)`,
     );
+    // Awarded, Cancelled, and Removed RFQs can no longer be quoted, so they count as expired.
+    result.push(sql`coalesce(extra->>'status', 'Open') = 'Open'`);
   }
   if (query.qtyMin !== undefined) result.push(sql`quantity >= ${query.qtyMin}`);
   if (query.qtyMax !== undefined) result.push(sql`quantity <= ${query.qtyMax}`);
