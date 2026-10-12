@@ -70,6 +70,7 @@ Non-goals:
 | Has technical documents | Without drawings many vendors cannot quote | `hasTechnicalDocuments` |
 
 Each filter option shows a count for the current result set (facets).
+A field's facet counts apply every active filter except that field's own, so selecting one option never hides its siblings.
 The final set depends on what WS1 finds cheap to ingest; the README will explain the choices.
 
 ### 5.4 Ingestion
@@ -102,7 +103,7 @@ The final set depends on what WS1 finds cheap to ingest; the README will explain
 
 | Path | Owner |
 | --- | --- |
-| `package.json`, configs, `docker-compose.yml`, `.env.example`, `src/app/layout.tsx`, `src/app/page.tsx` | WS0 |
+| `package.json`, configs, `CLAUDE.md`, `docker-compose.yml`, `.env.example`, `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/providers.tsx` | WS0 |
 | `src/lib/solicitation.ts` (data contract) | WS0 + WS1, identical content |
 | `src/lib/query.ts` (query contract, URL parse/serialize) | WS0 |
 | `src/lib/api.ts` (fetch hooks) | WS0 |
@@ -152,12 +153,13 @@ export interface SolicitationPage {
 ```
 
 The page URL and the API URL use the same params, so `src/lib/query.ts` is the single parser and serializer for both.
+Arrays are repeated params (`fsc=5305&fsc=5310`), booleans are `true`/`false`, and params equal to their default are omitted so URLs stay short.
 
 ## 7. Workstreams
 
 | WS | What | Who | Starts | Blocked by |
 | --- | --- | --- | --- | --- |
-| WS0 | Scaffold + walking skeleton + contracts | Lead | Now | PRD decisions |
+| WS0 | Scaffold + walking skeleton + contracts | Agent F | Now | Nothing |
 | WS1 | DIBBS ingestion module + CLI | Agent A | Now | Nothing |
 | WS5 | Reference data: FSG/FSC names, set-aside labels, buying office codes | Agent E | Now | Nothing |
 | WS2 | Postgres schema and migrations, upsert, search, facets, real API routes, refresh endpoint, fixture seed script | Agent B | After WS0 | WS0 (WS1 fixture nice to have) |
@@ -178,7 +180,7 @@ WS0 walking skeleton, so WS2 to WS4 never wait on each other:
 
 | Window | Lead | Agents |
 | --- | --- | --- |
-| T0 to T+30m | Finalize PRD, build WS0, write WS2 to WS5 prompts | WS1 recon + fixture, WS5 |
+| T0 to T+30m | Finalize PRD, review WS0, write WS2 to WS5 prompts | WS1 recon + fixture, WS5 |
 | T+30m to T+2h | Merge milestones, unblock, review | WS1 module, WS2, WS3, WS4 |
 | T+2h to T+3h | Integrate, real ingest of 7 to 10 days, E2E pass in a browser, fix | Fix-up tasks from lead |
 | T+3h to T+3.5h | Polish, README (approach, filters, tradeoffs), demo script | Optional stretch items |
