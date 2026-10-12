@@ -1,7 +1,7 @@
 # Solicitation Browser
 
 Next.js app that pulls daily DIBBS RFQs and lets a vendor browse, search, and filter them.
-Brief: `README.md`. Product, architecture, and contracts: `docs/PRD.md`.
+Brief: `docs/ASSIGNMENT.md`. Product, architecture, and contracts: `docs/PRD.md`.
 
 ## Commands
 
