@@ -5,6 +5,8 @@ Before submitting: verify every feature claim against the merged app, resolve ea
 
 # Solicitation Browser
 
+Live demo: https://web-production-15eec.up.railway.app
+
 A fast, focused way for defense suppliers to find the DIBBS RFQs worth quoting on.
 
 The U.S. Defense Logistics Agency posts hundreds of Requests for Quotation to [DIBBS](https://www.dibbs.bsm.dla.mil/RFQ/) every weekday.
