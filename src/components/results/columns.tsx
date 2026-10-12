@@ -17,6 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { fscLabel, setAsideLabel } from "@/lib/reference";
 import type { Solicitation } from "@/lib/solicitation";
 import { cn } from "@/lib/utils";
 
@@ -75,11 +76,7 @@ export const columns = column.columns([
     enableSorting: false,
     cell: ({ getValue }) => {
       const value = getValue();
-      return value ? (
-        <span className="font-mono tabular-nums">{value}</span>
-      ) : (
-        <Empty />
-      );
+      return value ? <FscCell fsc={value} /> : <Empty />;
     },
   }),
   column.accessor("quantity", {
@@ -204,11 +201,35 @@ function TruncatedText({ text }: { text: string }) {
   );
 }
 
+function FscCell({ fsc }: { fsc: string }) {
+  const code = <span className="font-mono tabular-nums">{fsc}</span>;
+  const label = fscLabel(fsc);
+  if (label === fsc) return code;
+  return (
+    <Tooltip delayDuration={300}>
+      <TooltipTrigger asChild>
+        <span className="cursor-default underline decoration-muted-foreground/40 decoration-dotted underline-offset-4">
+          {code}
+        </span>
+      </TooltipTrigger>
+      <TooltipContent side="top">{label}</TooltipContent>
+    </Tooltip>
+  );
+}
+
 function SetAsideCell({ value }: { value: string | null }) {
   if (!value) return <Empty />;
+  const label = setAsideLabel(value);
+  // Most RFQs are unrestricted, so only real set-asides get a badge and stand out.
+  if (label === "Unrestricted")
+    return <span className="text-xs text-muted-foreground">{label}</span>;
   return (
-    <Badge variant="secondary" className="max-w-full justify-start font-normal">
-      <span className="truncate">{value}</span>
+    <Badge
+      variant="secondary"
+      className="max-w-full justify-start font-normal"
+      title={label === value ? undefined : value}
+    >
+      <span className="truncate">{label}</span>
     </Badge>
   );
 }
