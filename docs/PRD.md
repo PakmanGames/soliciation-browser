@@ -105,8 +105,8 @@ The final set depends on what WS1 finds cheap to ingest; the README will explain
 - One TypeScript codebase: Next.js (App Router) on Node 24, pnpm.
 - UI: Tailwind, shadcn/ui, TanStack Table, TanStack Query.
 - Storage: PostgreSQL 17, run locally with Docker Compose, `DATABASE_URL` in `.env`.
-- Data access (proposed): Drizzle ORM for schema and migrations, raw SQL where search needs it.
-- Search: a generated `tsvector` column with a GIN index for words in nomenclature, plus `pg_trgm` indexes for partial matches on NSN, part number, and solicitation number.
+- Data access: `postgres` (postgres.js) with plain SQL and one idempotent `schema.sql`, no ORM.
+- Search: a generated lowercase `haystack` column (solicitation number, NSN, part number, nomenclature) with a `pg_trgm` GIN index; every search term must appear as a substring.
 - Flow: DIBBS -> `src/server/dibbs` (fetch + parse) -> `src/server/db` (upsert, query, facets) -> `GET /api/solicitations` -> UI.
 - Why this shape: Postgres handles 10k to 100k rows with full-text search and facet counts in milliseconds, makes a hosted demo easy (any managed Postgres), and a single API route is a clean seam between UI and server agents.
 
@@ -119,7 +119,7 @@ The final set depends on what WS1 finds cheap to ingest; the README will explain
 | `src/lib/query.ts` (query contract, URL parse/serialize) | WS0 |
 | `src/lib/api.ts` (fetch hooks) | WS0 |
 | `src/server/dibbs/**`, `scripts/ingest.ts`, `docs/dibbs-data-source.md` | WS1 |
-| `src/server/db/**`, `drizzle/**` (migrations), `src/app/api/**` | WS2 (replaces WS0 stub) |
+| `src/server/db/**`, `scripts/db-*.ts`, `src/app/api/**` | WS2 (replaces WS0 stub) |
 | `src/components/results/**` | WS3 |
 | `src/components/filters/**`, `src/components/search/**` | WS4 |
 | `src/lib/reference/**` | WS5 |
@@ -220,10 +220,11 @@ WS0 walking skeleton, so WS2 to WS4 never wait on each other:
 | Stack | Next.js, TypeScript, PostgreSQL | Lead's call; one language end to end, Postgres covers search and facets |
 | Local database | Docker Compose, Postgres 17 | Reviewers can run it with one command |
 | Ingestion path | Plain HTTP from Node, browser only for recon and verification | The app must refresh on its own with no human browser in the loop |
+| Data access | postgres.js and plain SQL, no ORM | Fewest moving parts for a 1-hour budget |
+| Search | Substring match on a trigram-indexed `haystack` column | Handles partial NSNs and part numbers, which word-based full-text search does not |
 
 ## 12. Open questions
 
 1. Demo: local only, or do we want a hosted URL?
 2. Exact time budget and how many agents you can run at once.
 3. Any filters you already know you want, or want to drop?
-4. Drizzle for data access, or raw SQL only?
