@@ -2,6 +2,7 @@ import { useSyncExternalStore } from "react";
 
 import { facetLabel } from "@/components/filters/facet-labels";
 import type { SolicitationPage, SolicitationQuery } from "@/lib/query";
+import { OFFICES } from "@/lib/reference";
 
 const subscribeNever = () => () => {};
 
@@ -71,8 +72,14 @@ export function facetOptions(
 }
 
 export interface OfficeGroup extends FacetOption {
-  /** Buying office codes (DoDAACs) under this center, as stored in the URL. */
+  /** Buying office codes (DoDAACs) under this center in the current facet counts. */
   codes: string[];
+  /**
+   * URL values that select the whole center: its reference prefixes ("SPE7L", "SPE7M"),
+   * or its codes when the center is unknown. Prefixes also cover codes that the current
+   * filters hide, so loosening another filter later never leaves the center half-selected.
+   */
+  prefixes: string[];
 }
 
 /**
@@ -84,12 +91,33 @@ export function officeGroups(options: FacetOption[]): OfficeGroup[] {
   const groups = new Map<string, OfficeGroup>();
   for (const { value, count } of options) {
     const center = facetLabel("office", value) ?? value;
-    const group = groups.get(center) ?? { value: center, count: 0, codes: [] };
+    const group = groups.get(center) ?? {
+      value: center,
+      count: 0,
+      codes: [],
+      prefixes: [],
+    };
     group.count += count;
     group.codes.push(value);
     groups.set(center, group);
   }
+  for (const group of groups.values()) {
+    const prefixes = Object.keys(OFFICES).filter(
+      (prefix) => OFFICES[prefix].short === group.value,
+    );
+    group.prefixes = prefixes.length > 0 ? prefixes : group.codes;
+  }
   return [...groups.values()].sort((a, b) => b.count - a.count);
+}
+
+/** True when a selected office value (a code or a prefix) covers any of the group's codes. */
+export function officeGroupSelected(
+  group: OfficeGroup,
+  selected: string[] = [],
+): boolean {
+  return group.codes.some((code) =>
+    selected.some((value) => code.startsWith(value)),
+  );
 }
 
 /** Local calendar date `days` before today, as "YYYY-MM-DD". */

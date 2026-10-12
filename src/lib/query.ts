@@ -30,7 +30,11 @@ export interface SolicitationQuery {
   fsc?: string[];
   /** Raw `setAside` values, OR-ed together. */
   setAside?: string[];
-  /** Buying office codes: the first 6 characters of the solicitation number, e.g. "SPE7M1". OR-ed together. */
+  /**
+   * Buying offices as solicitation number prefixes, OR-ed together: an office code (the first
+   * 6 characters, e.g. "SPE7M1"), or a shorter prefix that covers every code of one DLA center
+   * (e.g. "SPE7M"). Facet counts are always per 6-character code.
+   */
   office?: string[];
   /** Inclusive lower bound on `quantity`. Rows with null quantity are excluded when set. */
   qtyMin?: number;

@@ -46,6 +46,7 @@ export function SearchBox() {
         <InputGroupInput
           ref={inputRef}
           type="search"
+          name="q"
           enterKeyHint="search"
           autoComplete="off"
           spellCheck={false}

@@ -29,7 +29,8 @@ export default function Page() {
           </Suspense>
         </aside>
         <main className="flex min-w-0 flex-1 flex-col">
-          <div className="shrink-0 border-b p-3">
+          {/* Same height as the filter panel header, so their bottom borders line up. */}
+          <div className="flex h-14 shrink-0 flex-col justify-center border-b px-3">
             <Suspense fallback={<Skeleton className="h-9 w-full" />}>
               <SearchBox />
             </Suspense>

@@ -87,9 +87,8 @@ export function SyncStatus() {
         aria-label="Refresh from DIBBS"
       >
         <RefreshCwIcon className={cn(refresh.isPending && "animate-spin")} />
-        <span className="hidden sm:inline">
-          {refresh.isPending ? "Refreshing" : "Refresh"}
-        </span>
+        {/* A fixed label keeps the button width, and the "Synced" text beside it, from shifting. */}
+        <span className="hidden sm:inline">Refresh</span>
       </Button>
     </div>
   );

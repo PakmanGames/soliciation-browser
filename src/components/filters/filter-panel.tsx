@@ -13,6 +13,7 @@ import {
   daysAgo,
   facetOptions,
   formatDay,
+  officeGroupSelected,
   officeGroups,
   useHydrated,
 } from "@/components/filters/filter-state";
@@ -82,20 +83,24 @@ export function FilterPanel() {
     };
 
   // A center counts as selected when any of its codes is, so unchecking always clears it.
+  // Selected prefixes absent from the facets come back as zero-count options in their center.
   const offices = officeGroups(facetOptions(data?.facets.office, query.office));
   const selectedOffices = offices
-    .filter((group) => group.codes.some((code) => query.office?.includes(code)))
+    .filter((group) => officeGroupSelected(group, query.office))
     .map((group) => group.value);
   const toggleOffice = (center: string, checked: boolean) => {
-    const codes = offices.find((group) => group.value === center)?.codes ?? [];
-    const rest = (query.office ?? []).filter((code) => !codes.includes(code));
-    const next = checked ? [...rest, ...codes] : rest;
+    const group = offices.find((item) => item.value === center);
+    if (!group) return;
+    const rest = (query.office ?? []).filter(
+      (value) => !group.codes.some((code) => code.startsWith(value)),
+    );
+    const next = checked ? [...rest, ...group.prefixes] : rest;
     setQuery({ office: next.length > 0 ? next : undefined });
   };
 
   return (
     <div className="flex flex-col">
-      <div className="sticky top-0 z-10 flex h-12 shrink-0 items-center justify-between gap-2 border-b bg-background px-4">
+      <div className="sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between gap-2 border-b bg-background px-4">
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-semibold">Filters</h2>
           {activeCount > 0 && (
