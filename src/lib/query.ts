@@ -10,8 +10,9 @@ import type { Solicitation } from "@/lib/solicitation";
 
 export interface SolicitationQuery {
   /**
-   * Free-text search, case-insensitive, partial match on solicitation number,
-   * NSN (with or without dashes), nomenclature, and part number.
+   * Free-text search over solicitation number, NSN, part number, and nomenclature,
+   * case-insensitive. Split on whitespace; every term must appear as a substring.
+   * NSN-like terms (digits and dashes) also match with dashes stripped.
    */
   q?: string;
   /** Inclusive lower bound on `issueDate`, "YYYY-MM-DD". */

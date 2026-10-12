@@ -122,15 +122,31 @@ function matches(
   return true;
 }
 
+/**
+ * Every whitespace-separated term must appear as a substring of the row's searchable
+ * text. A term of only digits and dashes may be a dashed NSN ("5305-01-234"), so it
+ * also matches with the dashes stripped; the raw form still matches dashed part numbers.
+ */
 function matchesText(row: Solicitation, q: string): boolean {
-  const needle = q.toLowerCase();
-  const digits = needle.replace(/-/g, "");
-  return (
-    row.solicitationNumber.toLowerCase().includes(digits) ||
-    (row.nsn !== null && digits !== "" && row.nsn.includes(digits)) ||
-    (row.nomenclature?.toLowerCase().includes(needle) ?? false) ||
-    (row.partNumber?.toLowerCase().includes(needle) ?? false)
-  );
+  const haystack = [
+    row.solicitationNumber,
+    row.nsn,
+    row.partNumber,
+    row.nomenclature,
+  ]
+    .filter((field) => field !== null)
+    .join(" ")
+    .toLowerCase();
+  return q
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every(
+      (term) =>
+        haystack.includes(term) ||
+        (/^[\d-]*\d[\d-]*$/.test(term) &&
+          haystack.includes(term.replace(/-/g, ""))),
+    );
 }
 
 function sortRows(
