@@ -13,6 +13,7 @@ import {
   daysAgo,
   facetOptions,
   formatDay,
+  officeGroups,
   useHydrated,
 } from "@/components/filters/filter-state";
 import { FscFilter } from "@/components/filters/fsc-filter";
@@ -79,6 +80,18 @@ export function FilterPanel() {
         : current.filter((item) => item !== value);
       setQuery({ [field]: next.length > 0 ? next : undefined });
     };
+
+  // A center counts as selected when any of its codes is, so unchecking always clears it.
+  const offices = officeGroups(facetOptions(data?.facets.office, query.office));
+  const selectedOffices = offices
+    .filter((group) => group.codes.some((code) => query.office?.includes(code)))
+    .map((group) => group.value);
+  const toggleOffice = (center: string, checked: boolean) => {
+    const codes = offices.find((group) => group.value === center)?.codes ?? [];
+    const rest = (query.office ?? []).filter((code) => !codes.includes(code));
+    const next = checked ? [...rest, ...codes] : rest;
+    setQuery({ office: next.length > 0 ? next : undefined });
+  };
 
   return (
     <div className="flex flex-col">
@@ -215,11 +228,11 @@ export function FilterPanel() {
           onClear={() => setQuery({ office: undefined })}
         >
           <FacetChecklist
-            field="office"
-            options={facetOptions(data?.facets.office, query.office)}
-            selected={query.office ?? []}
+            field={null}
+            options={offices}
+            selected={selectedOffices}
             loading={loading}
-            onToggle={toggleFacet("office")}
+            onToggle={toggleOffice}
           />
         </FilterSection>
 

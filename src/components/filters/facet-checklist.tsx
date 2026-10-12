@@ -14,7 +14,10 @@ import { cn } from "@/lib/utils";
 
 const COLLAPSED_COUNT = 8;
 
-/** Multi-select checkbox list for a short facet (set-aside, buying office). */
+/**
+ * Multi-select checkbox list for a short facet (set-aside, buying office).
+ * `field` is null when the option values are already human labels.
+ */
 export function FacetChecklist({
   field,
   options,
@@ -22,7 +25,7 @@ export function FacetChecklist({
   loading,
   onToggle,
 }: {
-  field: FacetField;
+  field: FacetField | null;
   options: FacetOption[];
   selected: string[];
   loading: boolean;

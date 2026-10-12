@@ -91,15 +91,16 @@ export function SegmentedFilter({
 /**
  * Label, raw code, and count for one facet value. Zero-count values are dimmed: they only
  * render while selected, so the user can unselect them.
+ * `field` is null when the values are already human labels (grouped offices).
  */
 export function FacetOptionText({
   field,
   option,
 }: {
-  field: FacetField;
+  field: FacetField | null;
   option: FacetOption;
 }) {
-  const label = facetLabel(field, option.value);
+  const label = field && facetLabel(field, option.value);
   return (
     <>
       {/* The name truncates before the code does: vendors scan FSCs by code. */}

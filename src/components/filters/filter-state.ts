@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 
+import { facetLabel } from "@/components/filters/facet-labels";
 import type { SolicitationPage, SolicitationQuery } from "@/lib/query";
 
 const subscribeNever = () => () => {};
@@ -67,6 +68,28 @@ export function facetOptions(
       options.push({ value, count: 0 });
   }
   return options;
+}
+
+export interface OfficeGroup extends FacetOption {
+  /** Buying office codes (DoDAACs) under this center, as stored in the URL. */
+  codes: string[];
+}
+
+/**
+ * Buying offices grouped by DLA center, in descending count order.
+ * Vendors think "Land and Maritime", not its DoDAACs (SPE7L1, SPE7M2, ...), and several
+ * codes share one center, so one row per center selects all of its codes.
+ */
+export function officeGroups(options: FacetOption[]): OfficeGroup[] {
+  const groups = new Map<string, OfficeGroup>();
+  for (const { value, count } of options) {
+    const center = facetLabel("office", value) ?? value;
+    const group = groups.get(center) ?? { value: center, count: 0, codes: [] };
+    group.count += count;
+    group.codes.push(value);
+    groups.set(center, group);
+  }
+  return [...groups.values()].sort((a, b) => b.count - a.count);
 }
 
 /** Local calendar date `days` before today, as "YYYY-MM-DD". */
