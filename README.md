@@ -70,6 +70,7 @@ Each filter answers a question a vendor asks while triaging.
 Every multi-select option shows how many results it would add, and an option's count ignores that same filter's own selection, so picking "Screws" never hides "Bolts" from the list.
 
 The defaults are opinions too: the table opens on open RFQs sorted by the soonest due date, because the most urgent quotable work belongs at the top.
+RFQs that can no longer be quoted (past due, or marked Awarded, Cancelled, or Removed on DIBBS) are hidden until "Include expired" is checked.
 
 <!-- TODO(integration): adjust this table to the filters that actually shipped, based on which fields WS1 could ingest. -->
 
@@ -124,7 +125,22 @@ Parsing is kept in pure functions (raw response in, records out), separate from 
 Every record is normalized into one shared shape, `Solicitation` in `src/lib/solicitation.ts`: NSNs as 13 digits, dates as `YYYY-MM-DD`, uppercase solicitation numbers, numeric quantities.
 A bad page is recorded as a partial error rather than losing the whole day.
 
-<!-- TODO(integration): which source WS1 chose (bulk daily files, search-result pages, or detail pages), RFQs per day, and time per day. -->
+**Two sources, joined.**
+The primary source is DIBBS's "RFQs by Issue Date" search grid, paged 50 rows at a time through ASP.NET postbacks.
+It is the only source with the exact issue date, set-aside, technical-documents flag, status, and PDF link on every row.
+Rows are then enriched from DIBBS's daily index files (`inYYMMDD.txt`) with unit of issue, buyer code, and acquisition method suitability code (AMSC).
+The index files alone were not enough: they are keyed by posting date rather than issue date, and they lack the technical-documents flag.
+
+**Volume and cost.**
+A busy weekday is 1,500 to 3,000 RFQ lines, about one request per 50 rows, and one to two minutes to ingest, because WebForms paging is a sequential postback chain.
+Record counts match DIBBS's own "Records Found" for every date tested.
+
+**Deep links.**
+Each row links to DIBBS's package view (`rfqrec.aspx?sn=<solicitation>`).
+This was verified from a fresh browser with no cookies: the consent banner appears, and accepting it lands on the right record.
+DIBBS's consent redirect keeps only the first query parameter, so links are built with exactly one.
+
+The full field mapping and limitations are in [`docs/dibbs-data-source.md`](docs/dibbs-data-source.md).
 
 ### Storage: PostgreSQL
 
@@ -173,7 +189,8 @@ The whole project had a one-hour budget, so the plan was designed around paralle
 
 - **Saved searches and alerts.** Vendors do not really want to browse; they want to be told. Saved filter sets ("my FSCs, small-business, due in 7+ days") plus a daily email of new matches is the natural next step.
 - **Scheduled ingestion** with a small history of runs and their health.
-- **Richer fields** from detail pages and solicitation PDFs: acquisition method suitability codes, approved sources (CAGE and part number), first article testing, and delivery days.
+- **"I am an approved source" filter.** DIBBS publishes approved sources (CAGE code and part number per NSN) in a daily batch file; ingesting it would let a vendor see only the RFQs they are already qualified to win.
+- **Richer fields** from detail pages and solicitation PDFs: first article testing and delivery days.
 - **Award history per NSN**, so a vendor can see what the item sold for last time before pricing a quote.
 - **Tests** for the DIBBS parsers against saved pages, and for the query layer.
 - **A hosted demo** on managed Postgres.
