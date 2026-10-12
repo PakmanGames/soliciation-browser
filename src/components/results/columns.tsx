@@ -224,11 +224,7 @@ function SetAsideCell({ value }: { value: string | null }) {
   if (label === "Unrestricted")
     return <span className="text-xs text-muted-foreground">{label}</span>;
   return (
-    <Badge
-      variant="secondary"
-      className="max-w-full justify-start font-normal"
-      title={label === value ? undefined : value}
-    >
+    <Badge variant="secondary" className="max-w-full justify-start font-normal">
       <span className="truncate">{label}</span>
     </Badge>
   );
