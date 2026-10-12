@@ -102,13 +102,14 @@ export function FacetOptionText({
   const label = facetLabel(field, option.value);
   return (
     <>
+      {/* The name truncates before the code does: vendors scan FSCs by code. */}
       <span
-        className="min-w-0 flex-1 truncate"
+        className="flex min-w-0 flex-1 items-baseline gap-1.5"
         title={label ? `${label} (${option.value})` : option.value}
       >
-        {label ?? option.value}
+        <span className="truncate">{label ?? option.value}</span>
         {label && (
-          <span className="ml-1.5 text-xs text-muted-foreground">
+          <span className="max-w-1/2 shrink-0 truncate text-xs text-muted-foreground">
             {option.value}
           </span>
         )}
